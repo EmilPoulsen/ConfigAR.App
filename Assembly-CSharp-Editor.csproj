@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{4F62D6F0-3C41-D6F7-6BB8-C274F6A912CB}</ProjectGuid>
+    <ProjectGuid>{D2244105-2C51-96FC-73EA-F1557CD8A721}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -59,7 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/Scenes/ARKit/ARCollaborationData/Editor/CollaborationBuildPostprocessor.cs" />
-    <Compile Include="Assets\Scripts\NewMonoBehaviour.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -830,7 +829,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{F3A69111-D017-57F1-4E1B-B3302B8EF9BC}</Project>
+      <Project>{CF72EFC5-13D5-28D1-BFA1-E99E1CE1F118}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
   </ItemGroup>
