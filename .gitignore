@@ -221,6 +221,8 @@ _pkginfo.txt
 
 # Others
 ClientBin/
+Library/
+*.DS_Store
 ~$*
 *~
 *.dbmdl

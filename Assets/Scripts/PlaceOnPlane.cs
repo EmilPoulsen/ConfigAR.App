@@ -1,7 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using System.Collections;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using UnityEngine.UI;
+using System;
 
 namespace UnityEngine.XR.ARFoundation.Samples
 {
@@ -13,8 +17,32 @@ namespace UnityEngine.XR.ARFoundation.Samples
     /// and moved to the hit position.
     /// </summary>
     [RequireComponent(typeof(ARRaycastManager))]
+    [Serializable]
+    public class MyClass
+    {
+        public int level;
+        public float timeElapsed;
+        public string playerName;
+    }
+
     public class PlaceOnPlane : MonoBehaviour
     {
+
+        
+        MyClass myObject = new MyClass();
+        
+        
+
+
+        public Dropdown m_Dropdown;
+        //This is the string that stores the current selection m_Text of the Dropdown
+        string m_Message;
+        //This Text outputs the current selection to the screen
+        //public Text m_Text;
+        //This is the index value of the Dropdown
+        int m_DropdownValue;
+
+
         [SerializeField]
         [Tooltip("Instantiates this prefab on a plane at the touch location.")]
         GameObject m_PlacedPrefab;
@@ -22,6 +50,12 @@ namespace UnityEngine.XR.ARFoundation.Samples
         /// <summary>
         /// The prefab to instantiate on touch.
         /// </summary>
+        ///
+
+        public Text _title;
+        //find your dropdown object
+       
+
         public GameObject placedPrefab
         {
             get { return m_PlacedPrefab; }
@@ -36,6 +70,38 @@ namespace UnityEngine.XR.ARFoundation.Samples
         void Awake()
         {
             m_RaycastManager = GetComponent<ARRaycastManager>();
+        }
+
+        void Start()
+        {
+            StartCoroutine(Upload());
+            myObject.level = 1;
+            myObject.timeElapsed = 47.5f;
+            myObject.playerName = "Dr Charles Francis";
+            string json = JsonUtility.ToJson(myObject);
+            Debug.Log(json);
+        }
+
+        IEnumerator Upload()
+        {
+            WWWForm form = new WWWForm();
+            form.AddField("model", "shapemakersample-5");
+            form.AddField("points", "[{'x': 1,'y': 0},{'x': 0.5,'y': 0},{'x': 1.5,'y': 1},{'x': -0.5,'y': 1.5}]");
+
+            using (UnityWebRequest www = UnityWebRequest.Post("http://ptsv2.com/t/v416t-1667695141/post", form))
+            {
+                www.SetRequestHeader("Content-Type", "application/json");
+                yield return www.SendWebRequest();
+
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(www.error);
+                }
+                else
+                {
+                    Debug.Log("Form upload complete!");
+                }
+            }
         }
 
         bool TryGetTouchPosition(out Vector2 touchPosition)
@@ -60,14 +126,32 @@ namespace UnityEngine.XR.ARFoundation.Samples
                 // Raycast hits are sorted by distance, so the first one
                 // will be the closest hit.
                 var hitPose = s_Hits[0].pose;
+                //Input.GetTouch(0).phase == TouchPhase.Ended
+                if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                {
+                    //Keep the current index of the Dropdown in a variable
+                    m_DropdownValue = m_Dropdown.value;
+                    //Change the message to say the name of the current Dropdown selection using the value
+                    m_Message = m_Dropdown.options[m_DropdownValue].text;
+                    //Change the onscreen Text to reflect the current Dropdown selection
+                    //m_Text.text = m_Message;
 
-                if (spawnedObject == null)
-                {
                     spawnedObject = Instantiate(m_PlacedPrefab, hitPose.position, hitPose.rotation);
-                }
-                else
-                {
-                    spawnedObject.transform.position = hitPose.position;
+                    //Debug.Log(hitPose.position.x);
+                    _title.text += m_Message + ", " + hitPose.position.x.ToString() + ", " + hitPose.position.z.ToString();
+
+                    //if (spawnedObject == null)
+                    //{
+                    //    spawnedObject = Instantiate(m_PlacedPrefab, hitPose.position, hitPose.rotation);
+                    //    Debug.Log(hitPose.position.x);
+                    //    _title.text = hitPose.position.x.ToString() + ", " + hitPose.position.z.ToString();
+                    //}
+                    //else
+                    //{
+                    //    spawnedObject.transform.position = hitPose.position;
+                    //    Debug.Log(hitPose.position.x);
+                    //    _title.text = hitPose.position.x.ToString() + ", " + hitPose.position.z.ToString();
+                    //}
                 }
             }
         }
@@ -77,3 +161,5 @@ namespace UnityEngine.XR.ARFoundation.Samples
         ARRaycastManager m_RaycastManager;
     }
 }
+
+
