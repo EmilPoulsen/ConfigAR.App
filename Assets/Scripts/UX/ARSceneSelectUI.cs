@@ -131,7 +131,6 @@ namespace UnityEngine.XR.ARFoundation.Samples
 
         static void LoadScene(string sceneName)
         {
-            LoaderUtility.Initialize();
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }
 
@@ -211,11 +210,6 @@ namespace UnityEngine.XR.ARFoundation.Samples
         public void PointCloudButtonPressed()
         {
             LoadScene("AllPointCloudPoints");
-        }
-
-        public void ScaleButtonPressed()
-        {
-            LoadScene("Scale");
         }
 
         public void ConfigChooserButtonPressed()
@@ -390,11 +384,6 @@ namespace UnityEngine.XR.ARFoundation.Samples
             LoadScene("DepthImages");
         }
 
-        public void InputSystemButtonPressed()
-        {
-            LoadScene("InputSystem");
-        }
-
         public void CameraGrainButtonPressed()
         {
             LoadScene("CameraGrain");
@@ -403,6 +392,21 @@ namespace UnityEngine.XR.ARFoundation.Samples
         public void ThermalStateButtonPressed()
         {
             LoadScene("ThermalState");
+        }
+
+        public void SessionRecordingButtonPressed()
+        {
+            LoadScene("ARCoreSessionRecording");
+        }
+
+        public void DebugMenuButtonPressed()
+        {
+            LoadScene("DebugMenu");
+        }
+        
+        public void BackgroundRenderOrderButtonPressed()
+        {
+            LoadScene("BackgroundRenderOrder");
         }
 
         void ScrollToStartPosition()
