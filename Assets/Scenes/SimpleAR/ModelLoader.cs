@@ -11,7 +11,7 @@ public class ModelLoader : MonoBehaviour
     //Test files
     //https://github.com/mrdoob/three.js/raw/dev/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf
     //https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxVertexColors/glTF-Embedded/BoxVertexColors.gltf
-    //https://github.com/EmilPoulsen/ConfigAR.App/raw/main/boxes.gltf
+    //https://github.com/EmilPoulsen/ConfigAR.App/raw/main/office-layout.glb
     //https://configarbackend.azurewebsites.net/configurate
 
     private void Start()

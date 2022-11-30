@@ -10,6 +10,7 @@ using System;
 using UnityEngine.Networking;
 using Siccity.GLTFUtility;
 using System.IO;
+using System.Text;
 
 namespace UnityEngine.XR.ARFoundation.Samples
 {
@@ -67,11 +68,15 @@ namespace UnityEngine.XR.ARFoundation.Samples
             //WWWForm form = new WWWForm();
             //form.AddField("model", "shapemakersample-5");
             //form.AddField("points", "[{'x': 1,'y': 0},{'x': 0.5,'y': 0},{'x': 1.5,'y': 1},{'x': -0.5,'y': 1.5}]"); // https://ptsv2.com/t/v416t-1667695141/post
-
-            using (UnityWebRequest www = UnityWebRequest.Post("https://configarbackend.azurewebsites.net/configurate", JsonUtility.ToJson(myObject)))
+            string postData = JsonUtility.ToJson(myObject);
+            using (UnityWebRequest www = UnityWebRequest.Post("https://configarbackend.azurewebsites.net/configurate",postData))
             {
+                byte[] bodyRaw = Encoding.UTF8.GetBytes(postData);
+                www.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                www.downloadHandler = new DownloadHandlerBuffer();
                 www.SetRequestHeader("Content-Type", "application/json");
-               
+                //www.SetRequestHeader("Content-Type", "application/json");
+
                 yield return www.SendWebRequest();
 
                 if (www.result != UnityWebRequest.Result.Success)
@@ -82,6 +87,7 @@ namespace UnityEngine.XR.ARFoundation.Samples
                 {
                     Debug.Log("Form upload complete!");
                     Debug.Log(www.result);
+                    Debug.Log(www.downloadHandler.text);
                     //byte[] results = www.downloadHandler.data;
                     //using (var stream = new MemoryStream(results))
                     //using (var binaryStream = new BinaryReader(stream))
@@ -163,7 +169,7 @@ namespace UnityEngine.XR.ARFoundation.Samples
             myObject.points.Add(MyCr3);
 
 
-            //StartCoroutine(Upload());
+            StartCoroutine(Upload());
        
             filePath = $"{Application.persistentDataPath}/Files/test.gltf";
       
